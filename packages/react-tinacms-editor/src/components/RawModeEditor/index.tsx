@@ -20,29 +20,32 @@ import * as React from 'react'
 import { ChangeEvent, useState } from 'react'
 import { Plugin } from '@tinacms/core'
 
-import { Format } from '../../translator'
 import { ImageProps } from '../../types'
-import { Wysiwyg } from '../Editor'
+import { Wysiwyg as WysiwygEditor } from '../Editor'
+import { MarkdownEditor } from '../MarkdownEditor'
 
 export interface RawModeEditorProps {
   defaultValue: string
+  imageProps?: ImageProps
   onChange: (value: string) => void
   plugins?: Plugin[]
   sticky?: boolean
-  format?: Format
-  imageProps?: ImageProps
 }
 
 export const RawModeEditor = ({
   defaultValue,
-  // onChange,
+  imageProps,
+  onChange,
   plugins,
   sticky,
-  format,
-  imageProps,
 }: RawModeEditorProps) => {
   const [mode, setMode] = useState('wysiwyg')
   const [value, setValue] = useState(defaultValue)
+
+  const handleChange = (value: string) => {
+    setValue(value)
+    onChange(value)
+  }
 
   const handleModeChange = (evt: ChangeEvent<HTMLInputElement>) =>
     setMode(evt.target.value)
@@ -69,17 +72,18 @@ export const RawModeEditor = ({
         <span>Raw mode</span>
       </div>
       {mode === 'raw' ? (
-        <textarea value={value} onChange={evt => setValue(evt.target.value)} />
+        <MarkdownEditor value={value} onChange={handleChange} />
       ) : (
-        <Wysiwyg
+        <WysiwygEditor
           input={{
             value,
-            onChange: setValue,
+            onChange: handleChange,
           }}
           plugins={plugins}
           sticky={sticky}
-          format={format}
+          format="markdown"
           imageProps={imageProps}
+          markdownToggle={() => setMode('raw')}
         />
       )}
     </>

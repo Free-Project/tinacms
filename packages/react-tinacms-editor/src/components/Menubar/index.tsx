@@ -36,15 +36,21 @@ import { LinkForm as LinkFormPopup, Menu as LinkMenu } from '../../plugins/Link'
 
 import { useEditorStateContext } from '../../context/editorState'
 import { MenuPortalProvider } from '../../context/MenuPortal'
+import { MarkdownMenu } from './MarkdownMenu'
 
 import { MenuPlaceholder, MenuWrapper, MenuContainer } from './styledComponents'
 
 interface Props {
   sticky?: boolean | string
   uploadImages?: (files: File[]) => Promise<string[]>
+  markdownToggle?: () => void
 }
 
-export const Menubar = ({ sticky = true, uploadImages }: Props) => {
+export const Menubar = ({
+  sticky = true,
+  uploadImages,
+  markdownToggle,
+}: Props) => {
   const [menuFixed, setMenuFixed] = useState(false)
   const isBrowser = typeof window !== `undefined`
   const menuRef = useRef<HTMLDivElement>(null)
@@ -124,6 +130,7 @@ export const Menubar = ({ sticky = true, uploadImages }: Props) => {
             <CodeBlockMenu />
             <ListMenu />
             <HistoryMenu />
+            {markdownToggle && <MarkdownMenu markdownToggle={markdownToggle} />}
           </MenuContainer>
         </MenuPortalProvider>
       </MenuWrapper>
