@@ -19,27 +19,19 @@ limitations under the License.
 import React from 'react'
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 
-import { TablePopups } from '../../plugins/Table/Popup'
-import { WysiwygMenu as BlockMenu } from '../../plugins/Block'
-import { WysiwygMenu as CodeBlockMenu } from '../../plugins/CodeBlock'
-import { WysiwygMenu as HistoryMenu } from '../../plugins/History'
-import { WysiwygMenu as InlineMenu } from '../../plugins/Inline'
-import { WysiwygMenu as ListMenu } from '../../plugins/List'
-import { WysiwygMenu as QuoteMenu } from '../../plugins/Blockquote'
-import { WysiwygMenu as TableMenu } from '../../plugins/Table'
-import {
-  ImageEdit as ImageEditPopup,
-  Loader as ImageLoader,
-  WysiwygMenu as ImageMenu,
-} from '../../plugins/Image'
-import {
-  LinkForm as LinkFormPopup,
-  WysiwygMenu as LinkMenu,
-} from '../../plugins/Link'
-
-import { useEditorStateContext } from '../../context/editorState'
-import { MenuPortalProvider } from '../../context/MenuPortal'
+import { MarkdownMenu as BlockMenu } from '../../plugins/Block'
+import { MarkdownMenu as InlineMenu } from '../../plugins/Inline'
+import { MarkdownMenu as LinkMenu } from '../../plugins/Link'
+import { MarkdownMenu as ImageMenu } from '../../plugins/Image'
+import { MarkdownMenu as TableMenu } from '../../plugins/Table'
+import { MarkdownMenu as QuoteMenu } from '../../plugins/Blockquote'
+import { MarkdownMenu as CodeBlockMenu } from '../../plugins/CodeBlock'
+import { MarkdownMenu as ListMenu } from '../../plugins/List'
+import { MarkdownMenu as HistoryMenu } from '../../plugins/History'
 import { EditorModeMenu } from './EditorModeMenu'
+
+import { MenuPortalProvider } from '../../context/MenuPortal'
+import { ImageProps } from '../../types'
 
 import {
   MenuPlaceholder,
@@ -49,27 +41,26 @@ import {
 
 interface Props {
   sticky?: boolean | string
-  uploadImages?: (files: File[]) => Promise<string[]>
-  enableMarkdownEditing?: () => void
+  enableWysiwygEditing: () => void
+  imageProps?: ImageProps
 }
 
 export const Menubar = ({
   sticky = true,
-  uploadImages,
-  enableMarkdownEditing,
+  enableWysiwygEditing,
+  imageProps,
 }: Props) => {
   const [menuFixed, setMenuFixed] = useState(false)
   const isBrowser = typeof window !== `undefined`
   const menuRef = useRef<HTMLDivElement>(null)
   const [menuBoundingBox, setMenuBoundingBox] = useState<any>(null)
   const menuFixedTopOffset = typeof sticky === 'string' ? sticky : '0'
-  const { editorView } = useEditorStateContext()
 
   useEffect(() => {
     if (menuRef.current && sticky) {
       setMenuBoundingBox(menuRef.current.getBoundingClientRect())
     }
-  }, [menuRef, editorView])
+  }, [menuRef])
 
   useLayoutEffect(() => {
     if (!isBrowser || !menuRef.current || !sticky) {
@@ -108,12 +99,10 @@ export const Menubar = ({
     }
   }, [menuRef, menuBoundingBox])
 
-  const preventProsemirrorFocusLoss = React.useCallback((e: any) => {
+  const stopEvent = React.useCallback((e: any) => {
     e.stopPropagation()
     e.preventDefault()
   }, [])
-
-  if (!editorView) return null
 
   return (
     <>
@@ -127,28 +116,20 @@ export const Menubar = ({
         ref={menuRef}
       >
         <MenuPortalProvider>
-          <MenuContainer onMouseDown={preventProsemirrorFocusLoss}>
+          <MenuContainer onMouseDown={stopEvent}>
             <BlockMenu />
             <InlineMenu />
             <LinkMenu />
-            <ImageMenu uploadImages={uploadImages} />
+            {imageProps && <ImageMenu />}
             <TableMenu />
             <QuoteMenu />
             <CodeBlockMenu />
             <ListMenu />
             <HistoryMenu />
-            {enableMarkdownEditing && (
-              <EditorModeMenu enableMarkdownEditing={enableMarkdownEditing} />
-            )}
+            <EditorModeMenu enableWysiwygEditing={enableWysiwygEditing} />
           </MenuContainer>
         </MenuPortalProvider>
       </MenuWrapper>
-      <TablePopups />
-      <ImageEditPopup />
-      <LinkFormPopup />
-      <ImageLoader />
     </>
   )
 }
-
-// todo: sub-menus to return null if schema does not have related type of node / mark.

@@ -17,7 +17,7 @@ limitations under the License.
 */
 
 import * as React from 'react'
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 import { Plugin } from '@tinacms/core'
 
 import { ImageProps } from '../../types'
@@ -47,32 +47,15 @@ export const RawModeEditor = ({
     onChange(value)
   }
 
-  const handleModeChange = (evt: ChangeEvent<HTMLInputElement>) =>
-    setMode(evt.target.value)
-
   return (
     <>
-      <div>
-        <input
-          type="radio"
-          name="mode"
-          value="wysiwyg"
-          checked={mode === 'wysiwyg'}
-          onChange={handleModeChange}
-        />
-        <span>Wysiwyg mode</span>
-        <br />
-        <input
-          type="radio"
-          name="mode"
-          value="raw"
-          checked={mode === 'raw'}
-          onChange={handleModeChange}
-        />
-        <span>Raw mode</span>
-      </div>
       {mode === 'raw' ? (
-        <MarkdownEditor value={value} onChange={handleChange} />
+        <MarkdownEditor
+          value={value}
+          onChange={handleChange}
+          imageProps={imageProps}
+          enableWysiwygEditing={() => setMode('wysiwyg')}
+        />
       ) : (
         <WysiwygEditor
           input={{
@@ -83,7 +66,7 @@ export const RawModeEditor = ({
           sticky={sticky}
           format="markdown"
           imageProps={imageProps}
-          markdownToggle={() => setMode('raw')}
+          enableMarkdownEditing={() => setMode('raw')}
         />
       )}
     </>

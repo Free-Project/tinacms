@@ -35,7 +35,7 @@ export interface WysiwygProps {
   sticky?: boolean
   format?: Format
   imageProps?: ImageProps
-  markdownToggle?: () => void
+  enableMarkdownEditing?: () => void
 }
 
 export const Wysiwyg = styled(
@@ -45,7 +45,7 @@ export const Wysiwyg = styled(
     sticky,
     format,
     imageProps,
-    markdownToggle,
+    enableMarkdownEditing,
     ...styleProps
   }: WysiwygProps) => {
     const [el, setEl] = useState<HTMLDivElement>()
@@ -71,7 +71,7 @@ export const Wysiwyg = styled(
           <Menubar
             sticky={sticky}
             uploadImages={imageProps && imageProps.upload}
-            markdownToggle={markdownToggle}
+            enableMarkdownEditing={enableMarkdownEditing}
           />
         </EditorStateProvider>
         <div {...styleProps} ref={editorRef} />

@@ -16,28 +16,13 @@ limitations under the License.
 
 */
 
-import * as React from 'react'
-import { Menubar } from './Menubar'
-import { ImageProps } from '../../types'
+import React from 'react'
+import { MediaIcon } from '@tinacms/icons'
 
-export interface MarkdownEditorProps {
-  value: string
-  onChange: (value: string) => void
-  enableWysiwygEditing: () => void
-  imageProps?: ImageProps
-}
+import { MenuButton } from '../../../components/MenuHelpers'
 
-export const MarkdownEditor = ({
-  value,
-  onChange,
-  enableWysiwygEditing,
-  imageProps,
-}: MarkdownEditorProps) => (
-  <>
-    <Menubar
-      enableWysiwygEditing={enableWysiwygEditing}
-      imageProps={imageProps}
-    />
-    <textarea value={value} onChange={evt => onChange(evt.target.value)} />
-  </>
+export const MarkdownMenu = () => (
+  <MenuButton data-tooltip="Image" data-side="top" disabled>
+    <MediaIcon />
+  </MenuButton>
 )

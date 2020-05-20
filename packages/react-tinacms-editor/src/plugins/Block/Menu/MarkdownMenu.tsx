@@ -17,27 +17,16 @@ limitations under the License.
 */
 
 import * as React from 'react'
-import { Menubar } from './Menubar'
-import { ImageProps } from '../../types'
+import { FunctionComponent } from 'react'
 
-export interface MarkdownEditorProps {
-  value: string
-  onChange: (value: string) => void
-  enableWysiwygEditing: () => void
-  imageProps?: ImageProps
+import { HeadingIcon } from '@tinacms/icons'
+
+import { MenuButton } from '../../../components/MenuHelpers'
+
+export const MarkdownMenu: FunctionComponent = () => {
+  return (
+    <MenuButton data-tooltip={'Heading'} disabled>
+      <HeadingIcon />
+    </MenuButton>
+  )
 }
-
-export const MarkdownEditor = ({
-  value,
-  onChange,
-  enableWysiwygEditing,
-  imageProps,
-}: MarkdownEditorProps) => (
-  <>
-    <Menubar
-      enableWysiwygEditing={enableWysiwygEditing}
-      imageProps={imageProps}
-    />
-    <textarea value={value} onChange={evt => onChange(evt.target.value)} />
-  </>
-)

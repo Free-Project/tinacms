@@ -17,27 +17,32 @@ limitations under the License.
 */
 
 import * as React from 'react'
-import { Menubar } from './Menubar'
-import { ImageProps } from '../../types'
+import { BoldIcon, ItalicIcon, StrikethroughIcon } from '@tinacms/icons'
 
-export interface MarkdownEditorProps {
-  value: string
-  onChange: (value: string) => void
-  enableWysiwygEditing: () => void
-  imageProps?: ImageProps
-}
+import { markControl } from '../../../components/MenuHelpers'
 
-export const MarkdownEditor = ({
-  value,
-  onChange,
-  enableWysiwygEditing,
-  imageProps,
-}: MarkdownEditorProps) => (
+export const WysiwygMenu = () => (
   <>
-    <Menubar
-      enableWysiwygEditing={enableWysiwygEditing}
-      imageProps={imageProps}
-    />
-    <textarea value={value} onChange={evt => onChange(evt.target.value)} />
+    <BoldControl />
+    <ItalicControl />
+    <StrikeControl />
   </>
 )
+
+const BoldControl = markControl({
+  mark: 'strong',
+  Icon: BoldIcon,
+  tooltip: 'Bold',
+})
+
+const ItalicControl = markControl({
+  mark: 'em',
+  Icon: ItalicIcon,
+  tooltip: 'Italic',
+})
+
+const StrikeControl = markControl({
+  mark: 'strike',
+  Icon: StrikethroughIcon,
+  tooltip: 'Strike',
+})

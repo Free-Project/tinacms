@@ -17,27 +17,25 @@ limitations under the License.
 */
 
 import * as React from 'react'
-import { Menubar } from './Menubar'
-import { ImageProps } from '../../types'
+import { RedoIcon, UndoIcon } from '@tinacms/icons'
 
-export interface MarkdownEditorProps {
-  value: string
-  onChange: (value: string) => void
-  enableWysiwygEditing: () => void
-  imageProps?: ImageProps
-}
+import { MenuButton } from '../../../components/MenuHelpers'
 
-export const MarkdownEditor = ({
-  value,
-  onChange,
-  enableWysiwygEditing,
-  imageProps,
-}: MarkdownEditorProps) => (
+export const MarkdownMenu = () => (
   <>
-    <Menubar
-      enableWysiwygEditing={enableWysiwygEditing}
-      imageProps={imageProps}
-    />
-    <textarea value={value} onChange={evt => onChange(evt.target.value)} />
+    <UndoControl />
+    <RedoControl />
   </>
+)
+
+const UndoControl = () => (
+  <MenuButton data-tooltip="Undo" data-side="top" disabled>
+    <UndoIcon />
+  </MenuButton>
+)
+
+const RedoControl = () => (
+  <MenuButton data-tooltip="Redo" data-side="top" disabled>
+    <RedoIcon />
+  </MenuButton>
 )

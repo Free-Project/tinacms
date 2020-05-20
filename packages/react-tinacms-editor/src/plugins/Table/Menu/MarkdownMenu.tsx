@@ -16,19 +16,13 @@ limitations under the License.
 
 */
 
-import * as React from 'react'
+import React from 'react'
+import { TableIcon } from '@tinacms/icons'
 
-import { MarkdownIcon } from '@tinacms/icons'
-import { MenuButton } from '../MenuHelpers'
+import { MenuButton } from '../../../components/MenuHelpers'
 
-export const MarkdownMenu = ({
-  markdownToggle,
-}: {
-  markdownToggle: () => void
-}) => {
-  return (
-    <MenuButton data-tooltip={'Markdown mode'} onClick={() => markdownToggle()}>
-      <MarkdownIcon />
-    </MenuButton>
-  )
-}
+export const MarkdownMenu = () => (
+  <MenuButton data-tooltip="Table" disabled>
+    <TableIcon />
+  </MenuButton>
+)

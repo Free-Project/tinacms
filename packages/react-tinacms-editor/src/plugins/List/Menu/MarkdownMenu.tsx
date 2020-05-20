@@ -17,27 +17,25 @@ limitations under the License.
 */
 
 import * as React from 'react'
-import { Menubar } from './Menubar'
-import { ImageProps } from '../../types'
+import { UnorderedListIcon, OrderedListIcon } from '@tinacms/icons'
 
-export interface MarkdownEditorProps {
-  value: string
-  onChange: (value: string) => void
-  enableWysiwygEditing: () => void
-  imageProps?: ImageProps
-}
+import { MenuButton } from '../../../components/MenuHelpers'
 
-export const MarkdownEditor = ({
-  value,
-  onChange,
-  enableWysiwygEditing,
-  imageProps,
-}: MarkdownEditorProps) => (
+export const MarkdownMenu = (props: any) => (
   <>
-    <Menubar
-      enableWysiwygEditing={enableWysiwygEditing}
-      imageProps={imageProps}
-    />
-    <textarea value={value} onChange={evt => onChange(evt.target.value)} />
+    <BulletList {...props} />
+    <OrderedList {...props} />
   </>
+)
+
+const BulletList = () => (
+  <MenuButton data-tooltip="Unordered List" disabled>
+    <UnorderedListIcon />
+  </MenuButton>
+)
+
+const OrderedList = () => (
+  <MenuButton data-tooltip="Ordered List" disabled>
+    <OrderedListIcon />
+  </MenuButton>
 )

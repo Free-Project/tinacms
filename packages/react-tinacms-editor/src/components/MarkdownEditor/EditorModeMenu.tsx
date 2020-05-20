@@ -17,27 +17,20 @@ limitations under the License.
 */
 
 import * as React from 'react'
-import { Menubar } from './Menubar'
-import { ImageProps } from '../../types'
 
-export interface MarkdownEditorProps {
-  value: string
-  onChange: (value: string) => void
-  enableWysiwygEditing: () => void
-  imageProps?: ImageProps
-}
+import { MenuButton } from '../MenuHelpers'
 
-export const MarkdownEditor = ({
-  value,
-  onChange,
+export const EditorModeMenu = ({
   enableWysiwygEditing,
-  imageProps,
-}: MarkdownEditorProps) => (
-  <>
-    <Menubar
-      enableWysiwygEditing={enableWysiwygEditing}
-      imageProps={imageProps}
-    />
-    <textarea value={value} onChange={evt => onChange(evt.target.value)} />
-  </>
-)
+}: {
+  enableWysiwygEditing: () => void
+}) => {
+  return (
+    <MenuButton
+      data-tooltip={'Wysiwyg mode'}
+      onClick={() => enableWysiwygEditing()}
+    >
+      RAW
+    </MenuButton>
+  )
+}
